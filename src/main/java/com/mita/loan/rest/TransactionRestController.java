@@ -3,6 +3,7 @@ package com.mita.loan.rest;
 import com.mita.loan.dto.transaction.AcceptLoan;
 import com.mita.loan.dto.transaction.ApplyLoan;
 import com.mita.loan.dto.transaction.RejectLoan;
+import com.mita.loan.dto.transaction.TransactionDTO;
 import com.mita.loan.entity.Transaction;
 import com.mita.loan.service.TransactionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -82,10 +84,11 @@ public class TransactionRestController {
     @Operation(summary = "List of Pending Transaction")
     @GetMapping("/pendingTransaction")
     public ResponseEntity<Object> listPendingTransaction(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        List<Transaction> transactionList = transactionService.getAllTransaction();
+        List<TransactionDTO> transactionList = transactionService.getAllTransactions(username);
 
-        List<Transaction> pendingTransaction = transactionList.stream()
+        List<TransactionDTO> pendingTransaction = transactionList.stream()
                 .filter(t -> t.isPending()==true)
                 .collect(Collectors.toList());
 
@@ -99,9 +102,11 @@ public class TransactionRestController {
     @GetMapping("/rejectTransaction")
     public ResponseEntity<Object> listRejectTransaction(){
 
-        List<Transaction> transactionList = transactionService.getAllTransaction();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        List<Transaction> rejectTransaction = transactionList.stream()
+        List<TransactionDTO> transactionList = transactionService.getAllTransactions(username);
+
+        List<TransactionDTO> rejectTransaction = transactionList.stream()
                 .filter(t -> t.isReject()==true)
                 .collect(Collectors.toList());
 
@@ -111,18 +116,20 @@ public class TransactionRestController {
         return new ResponseEntity<>(rejectTransaction,HttpStatus.OK);
     }
 
-    @Operation(summary = "List of Accept Transaction",description = "Access only by creditor")
+    @Operation(summary = "List of Accept Transaction")
     @GetMapping("/acceptTransaction")
     public ResponseEntity<Object> listAcceptTransaction(){
 
-        List<Transaction> transactionList = transactionService.getAllTransaction();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        List<Transaction> acceptTransaction = transactionList.stream()
+        List<TransactionDTO> transactionList = transactionService.getAllTransactions(username);
+
+        List<TransactionDTO> acceptTransaction = transactionList.stream()
                 .filter(t -> t.isAccept()==true)
                 .collect(Collectors.toList());
 
         if(acceptTransaction == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pending transaction does not exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Accept transaction does not exist");
         }
         return new ResponseEntity<>(acceptTransaction,HttpStatus.OK);
     }

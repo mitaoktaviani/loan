@@ -11,7 +11,7 @@ public interface LoanOffersRepository extends JpaRepository<LoanOffers,Integer> 
     @Query(
             value = """
                     SELECT * 
-                    FROM LoanOffers lo 
+                    FROM LoanOffers AS lo 
                     WHERE lo.loanName = :loanName
                     """,
             nativeQuery = true

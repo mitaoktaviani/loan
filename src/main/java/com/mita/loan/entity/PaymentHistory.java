@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Table(name = "PaymentHistory")
 @Entity
@@ -30,4 +31,7 @@ public class PaymentHistory {
 
     @Column(name = "TotalPaid")
     private BigDecimal totalPaid;
+
+    @Column(name = "PaidDate")
+    private LocalDate paidDate;
 }

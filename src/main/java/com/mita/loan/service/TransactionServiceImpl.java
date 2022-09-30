@@ -3,6 +3,7 @@ package com.mita.loan.service;
 import com.mita.loan.dto.transaction.AcceptLoan;
 import com.mita.loan.dto.transaction.ApplyLoan;
 import com.mita.loan.dto.transaction.RejectLoan;
+import com.mita.loan.dto.transaction.TransactionDTO;
 import com.mita.loan.entity.*;
 import com.mita.loan.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,5 +109,11 @@ public class TransactionServiceImpl implements TransactionService{
     public List<Transaction> getAllTransaction() {
       List<Transaction> transactionList = transactionRepository.findAll();
         return transactionList;
+    }
+
+    @Override
+    public List<TransactionDTO> getAllTransactions(String username) {
+        List<TransactionDTO> transactionDTOS = transactionRepository.getAll(username);
+        return transactionDTOS;
     }
 }

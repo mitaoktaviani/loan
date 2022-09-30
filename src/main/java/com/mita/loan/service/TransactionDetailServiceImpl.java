@@ -8,6 +8,7 @@ import com.mita.loan.repository.TransactionDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -35,6 +36,7 @@ public class TransactionDetailServiceImpl implements TransactionDetailService {
         paymentHistory.setTotalPaid(transactionDetail.getPayAmount());
         paymentHistory.setTransactionDetailId(transactionDetail.getTransactionId());
         paymentHistory.setTransactionDetail(transactionDetail);
+        paymentHistory.setPaidDate(LocalDate.now());
 
         paymentHistoryRepository.save(paymentHistory);
 
