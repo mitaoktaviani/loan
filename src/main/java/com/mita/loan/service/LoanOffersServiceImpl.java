@@ -1,7 +1,9 @@
 package com.mita.loan.service;
 
 import com.mita.loan.dto.loanOffers.UpsertLoanOffersDTO;
+import com.mita.loan.entity.Categories;
 import com.mita.loan.entity.LoanOffers;
+import com.mita.loan.repository.CategoriesRepository;
 import com.mita.loan.repository.LoanOffersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,16 @@ public class LoanOffersServiceImpl implements LoanOffersService{
     @Autowired
     private LoanOffersRepository loanOffersRepository;
 
+    @Autowired
+    private CategoriesRepository categoriesRepository;
+
     @Override
     public Integer addLoanOffers(UpsertLoanOffersDTO dto) {
+
+        Optional<Categories> theCategory = categoriesRepository.findById(dto.getCategoryId());
+        Categories categories = null;
+        if(theCategory.isPresent()){
+            categories = theCategory.get();}
 
         LoanOffers loanOffers = new LoanOffers();
         loanOffers.setId(dto.getId());
@@ -26,6 +36,8 @@ public class LoanOffersServiceImpl implements LoanOffersService{
         loanOffers.setInterestRate(dto.getInterestRate());
         loanOffers.setRepayment(dto.getRepayment());
         loanOffers.setTotalCost(dto.getTotalPayment());
+        loanOffers.setCategories(categories);
+        loanOffers.setCategoryId(categories.getId());
 
         loanOffersRepository.save(loanOffers);
 
@@ -62,6 +74,16 @@ public class LoanOffersServiceImpl implements LoanOffersService{
         LoanOffers loanOffers = null;
         if(theLoanOffers.isPresent()){
             loanOffers = theLoanOffers.get();
+        }
+
+        Optional<Categories> theCategory = categoriesRepository.findById(dto.getCategoryId());
+        Categories categories = null;
+        if(theLoanOffers.isPresent()){
+            categories = theCategory.get();}
+
+        if(dto.getCategoryId()!=0){
+            loanOffers.setCategoryId(categories.getId());
+            loanOffers.setCategories(categories);
         }
 
         if(dto.getLoanName()!=null){

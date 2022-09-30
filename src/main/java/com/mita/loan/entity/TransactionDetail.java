@@ -43,5 +43,11 @@ public class TransactionDetail {
     @Column(name = "Term")
     private String term;
 
+    @Column(name = "Instalment")
+    private int instalment;
+
+    @Column(name = "IsPaid")
+    private boolean isPaid;
+
 
 }

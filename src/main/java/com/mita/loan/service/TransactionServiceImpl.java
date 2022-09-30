@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -95,9 +96,17 @@ public class TransactionServiceImpl implements TransactionService{
         transactionDetail.setPayAmount(dto.getPayAmount());
         transactionDetail.setPaymentDueDate(dto.getPaymentDueDate());
         transactionDetail.setTerm(transaction.getLoanOffers().getLoanTerm());
+        transactionDetail.setInstalment(dto.getInstalment());
+        transactionDetail.setPaid(false);
 
         transactionDetailRepository.save(transactionDetail);
 
         return transaction.getId();
+    }
+
+    @Override
+    public List<Transaction> getAllTransaction() {
+      List<Transaction> transactionList = transactionRepository.findAll();
+        return transactionList;
     }
 }

@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 @Getter @Setter @ToString
 public class UpsertLoanOffersDTO {
     private int id;
+    @NotNull
+    private int categoryId;
     @NotBlank(message = "Loan Name is required")
     private String loanName;
     @NotNull(message = "Amount is required")

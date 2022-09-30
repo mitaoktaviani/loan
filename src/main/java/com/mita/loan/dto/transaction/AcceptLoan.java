@@ -17,5 +17,7 @@ public class AcceptLoan {
     private LocalDate paymentDueDate;
     @NotNull
     private BigDecimal payAmount;
+    @NotNull
+    private int instalment;
 
 }

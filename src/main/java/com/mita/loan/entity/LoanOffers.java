@@ -35,4 +35,13 @@ public class LoanOffers {
     @Column(name = "TotalPayment")
     private BigDecimal totalCost;
 
+    @Column(name = "CategoryID")
+    private int categoryId;
+
+    @ManyToOne
+    @JoinColumn(name = "CategoryID",
+            insertable = false,
+            updatable = false)
+    private Categories categories;
+
 }

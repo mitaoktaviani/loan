@@ -32,8 +32,9 @@ public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/account/addCreditor").hasAuthority("Super Admin")
                 .antMatchers("/api/loanOffers/add","/api/loanOffers/update","/api/loanOffers/delete").hasAnyAuthority("Super Admin","Creditor")
                 .antMatchers("/api/loanOffers/list","api/loanOffers/{loanName}").hasAnyAuthority("Super Admin","Creditor","Debtor")
-                .antMatchers("/api/transaction/apply").hasAuthority("Debtor")
-                .antMatchers("/api/transaction/reject","/api/transaction/accept").hasAuthority("Creditor")
+                .antMatchers("/api/transaction/apply","/api/instalment/paid").hasAuthority("Debtor")
+                .antMatchers("/api/transaction/reject","/api/transaction/accept","/api/transaction/pendingTransaction",
+                        "/api/transaction/rejectTransaction","/api/transaction/acceptTransaction","/api/transaction/list","/api/categories/**").hasAuthority("Creditor")
                 .anyRequest().authenticated()
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
